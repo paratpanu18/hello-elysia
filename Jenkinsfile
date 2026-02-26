@@ -37,9 +37,6 @@ pipeline {
         }
 
         stage('Deploy to k8s') {
-            when {
-                branch 'master'
-            }
             steps {
                 withKubeConfig([credentialsId: 'ppechsa-kube-config']) {
                     sh "kubectl apply -f k8s/app.yaml"
