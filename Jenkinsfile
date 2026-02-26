@@ -7,9 +7,6 @@ pipeline {
     }
 
     stages {
-        when {
-            branch 'master'
-        }
         stage('Checkout') {
             steps {
                 checkout scm
