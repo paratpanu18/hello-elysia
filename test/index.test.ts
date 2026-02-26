@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { mult10, getcode } from '../src/index'
+import { ElysiaCustomStatusResponse } from 'elysia';
 
 describe('mult10', () => {
     it('should multiply the input by 10', () => {
@@ -15,10 +16,11 @@ describe('mult10', () => {
     });
 
     it('should throw an error if input is not a number', () => {
-        expect(() => mult10("" as any)).toThrow("Input must be a number");
-        expect(() => mult10("not a number" as any)).toThrow("Input must be a number");
-        expect(() => mult10(null as any)).toThrow("Input must be a number");
-        expect(() => mult10(undefined as any)).toThrow("Input must be a number");
+        expect(() => (mult10("not a number" as any))).toThrow("Input must be a number");
+        expect(() => (mult10("" as any))).toThrow("Input must be a number");
+        expect(() => (mult10("  " as any))).toThrow("Input must be a number");
+        expect(() => (mult10(null as any))).toThrow("Input must be a number");
+        expect(() => (mult10(undefined as any))).toThrow("Input must be a number");   
     });
 });
 
