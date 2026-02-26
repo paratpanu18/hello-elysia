@@ -35,24 +35,24 @@ pipeline {
         stage('Robot Framework Tests') {
             steps {
                 script {
+                    dir('external-tests') {
+                        git url: 'https://github.com/paratpanu18/hello-elysia-robot-test', branch: 'main'
+                    }
+
                     sh "docker network create test-net || true"
+
                     try {
                         sh "docker run -d --name test-app --network test-net ${IMAGE_NAME}:${IMAGE_TAG}"
                         sh "sleep 5"
 
-                        docker.image('ppodgorsek/robot-framework:latest').inside("--network test-net") {
-                            sh "robot --variable BASE_URL:http://test-app:3000 --outputdir results/ tests/"
+                        docker.image('ppodgorsek/robot-framework:latest').inside("--network test-net -v ${WORKSPACE}/external-tests:/tests") {
+                            sh "robot --variable BASE_URL:http://test-app:3000 --outputdir /results /tests"
                         }
                     } finally {
                         sh "docker rm -f test-app || true"
                         sh "docker network rm test-net || true"
+                        robot outputPath: 'results/', logFileName: 'log.html', reportFileName: 'report.html'
                     }
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'results/*.html', allowEmptyArchive: true
-                    robot outputPath: 'results/', logFileName: 'log.html', reportFileName: 'report.html'
                 }
             }
         }
