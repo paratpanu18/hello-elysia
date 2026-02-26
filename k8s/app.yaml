@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-elysia-deployment
+  labels:
+    app: hello-elysia
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-elysia
+  template:
+    metadata:
+      labels:
+        app: hello-elysia
+    spec:
+      containers:
+      - name: hello-elysia-container
+        image: ghcr.io/paratpanu18/hello-elysia:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000 # ElysiaJS listen on 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-elysia-service
+spec:
+  selector:
+    app: hello-elysia
+  ports:
+    - protocol: TCP
+      port: 3000         
+      targetPort: 3000 
+  type: LoadBalancer
