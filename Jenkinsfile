@@ -21,7 +21,12 @@ pipeline {
 
         stage('Build container image') {
             steps {
-            sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+                script {
+                    docker.image('oven/bun:canary-slim').inside('--network=host') {
+                        sh "bun install"
+                        sh "bun test"
+                    }
+                }
             }
         }
 
