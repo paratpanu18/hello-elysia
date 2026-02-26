@@ -47,7 +47,7 @@ pipeline {
 
                         sh "mkdir -p ${WORKSPACE}/results && chmod 777 ${WORKSPACE}/results"
 
-                        docker.image('ppodgorsek/robot-framework:latest').inside("--network test-net -v ${WORKSPACE}/external-tests:/tests") {
+                        docker.image('ppodgorsek/robot-framework:latest').inside("--network test-net --user root -v ${WORKSPACE}/external-tests:/tests") {
                             sh "robot --variable BASE_URL:http://test-app:3000 --outputdir /results /tests"
                         }
                     } finally {
