@@ -45,6 +45,8 @@ pipeline {
                         sh "docker run -d --name test-app --network test-net ${IMAGE_NAME}:${IMAGE_TAG}"
                         sh "sleep 5"
 
+                        sh "mkdir -p ${WORKSPACE}/results && chmod 777 ${WORKSPACE}/results"
+
                         docker.image('ppodgorsek/robot-framework:latest').inside("--network test-net -v ${WORKSPACE}/external-tests:/tests") {
                             sh "robot --variable BASE_URL:http://test-app:3000 --outputdir /results /tests"
                         }
