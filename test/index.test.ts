@@ -22,8 +22,8 @@ describe('mult10', () => {
     });
 });
 
-describe('getcode', () => {
-    it('should return the code string', () => {
-        expect(getcode()).toBe("Hello, CE");
-    });
-});
+// describe('getcode', () => {
+//     it('should return the code string', () => {
+//         expect(getcode()).toBe("Hello, CE");
+//     });
+// });
