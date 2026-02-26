@@ -1,8 +1,8 @@
-import { Elysia } from "elysia";
+import { Elysia, status } from "elysia";
 
 export function mult10(x: number) {
   if (typeof x !== 'number') {
-    throw new Error("Input must be a number");
+    throw status(400, "Input must be a number");
   }
   return x * 10;
 }
@@ -14,7 +14,7 @@ export function getcode() {
 
 const app = new Elysia()
                 .get("/", () => "Hello Elysia")
-                .get("/mult10/:num", ({ params }) => mult10(Number(params.num)))
+                .get("/mul10/:num", ({ params }) => mult10(Number(params.num)))
                 .get("/getcode", () => getcode())
                 .listen(3000);
 
