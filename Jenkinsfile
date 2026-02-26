@@ -15,8 +15,7 @@ pipeline {
 
         stage('Bun Test') {
             steps {
-                sh "bun install"
-                sh "bun test"
+                sh "docker run --rm -v \$(pwd):/app -w /app oven/bun:canary-slim bun install && bun test"
             }
         }
 
