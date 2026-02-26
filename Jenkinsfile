@@ -15,29 +15,24 @@ pipeline {
 
         stage('Bun Test') {
             steps {
-                sh "docker run --rm -v \$(pwd):/app -w /app oven/bun:canary-slim bun install && bun test"
-            }
-        }
-
-        stage('Build container image') {
-            steps {
                 script {
                     docker.image('oven/bun:canary-slim').inside('--network=host') {
-                        sh "bun install"
-                        sh "bun test"
-                    }
+                    sh "bun install"
+                    sh "bun test"
+            }
                 }
             }
         }
 
-        stage('Push to ghcr.io') {
+        stage('Build & Push') {
             steps {
-            script {
-                docker.withRegistry('https://ghcr.io', 'ghcr-token') {
-                sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
-                sh "docker push ${IMAGE_NAME}:latest"
+                script {
+                    docker.withRegistry('https://ghcr.io', 'ghcr-token') {
+                        def customImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "--network=host .")
+                        customImage.push()
+                        customImage.push('latest')
+                    }
                 }
-            }
             }
         }
 
