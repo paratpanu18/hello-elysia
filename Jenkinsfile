@@ -43,6 +43,10 @@ pipeline {
             steps {
                 withKubeConfig([credentialsId: 'ppechsa-kube-config']) {
                     sh "kubectl apply -f k8s/app.yaml"
+
+                    sh "kubectl set image deployment/hello-elysia-deployment hello-elysia-container=${IMAGE_NAME}:${IMAGE_TAG}"
+
+                    sh "kubectl rollout status deployment/hello-elysia-deployment"
                 }
             }
         }
