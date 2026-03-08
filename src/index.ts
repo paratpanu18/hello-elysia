@@ -7,7 +7,7 @@ export function mult10(x: number): number {
   return x * 10;
 }
 
-const CODE = "Hello, CE";
+const CODE = "Hello, Softdev!";
 export function getcode() {
   return CODE;
 }
